@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Desk Usage Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+        <!--<link rel="stylesheet" href="../static/css/app.css">-->
+    </head>
+    <body>
+        <h1>Desk Usage Dashboard</h1>
+
+        <!-- Display desk with status -->
+        <div id="desks-container"></div>
+
+        <!-- Include Socket.IO for real-time updates -->
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+        <!--<script src="../static/js/app.js"></script>-->
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    </body>
+
+</html>
