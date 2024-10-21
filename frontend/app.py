@@ -54,21 +54,26 @@ def get_desk_status():
 @app.route('/desks/<int:docking_station_id>', methods=['PUT'])
 def update_desk_status(docking_station_id):
     data = request.get_json()
-    employee_id = data.get('employee_id')
-    desk = DeskStatus.query.filter_by(docking_station_id = docking_station_id).first()
+    employee_id = data.get('employee_id')  # This could be None when unoccupied
+    desk = DeskStatus.query.filter_by(docking_station_id=docking_station_id).first()
 
     if desk:
-        desk.employee_id = employee_id
-        desk.status = 'occupied'
+        # Update desk status based on whether employee_id is provided or not
+        if employee_id is not None:
+            desk.employee_id = employee_id
+            desk.status = 'occupied'
+        else:
+            desk.employee_id = None
+            desk.status = 'free'  # Mark as free when unoccupied
         db.session.commit()
         socketio.emit('desk_update', {'desk_id': desk.id, 'status': desk.status}, broadcast=True)
         return jsonify({'message': 'Desk status updated'}), 200
     
     return jsonify({'message': 'Docking station not found'}), 404
 
+
 if __name__ == '__main__':
     # Ensure the app context is set up
     with app.app_context():
         db.create_all()  # Create tables if they don't exist
     socketio.run(app)
-
