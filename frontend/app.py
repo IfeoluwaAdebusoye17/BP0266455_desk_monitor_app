@@ -2,11 +2,16 @@ from flask import render_template
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit #For real-time updates
+import os
+from dotenv import load_dotenv
+load_dotenv() # Take environmental variables from .env
+database_uri = os.getenv('SQL_DATABASE_URI')
+
 
 app = Flask(__name__)
 
 #Configure the PostgreSQL database connection
-app.config[ 'SQLALCHEMY_DATABASE_URI' ] = 'postgresql://postgres:Postgrestill100k$@localhost/office_management'
+app.config[ 'SQLALCHEMY_DATABASE_URI' ] = database_uri
 app.config[ 'SQLALCHEMY_TRACK_MODIFICATIONS' ] = False
 
 db = SQLAlchemy(app)
