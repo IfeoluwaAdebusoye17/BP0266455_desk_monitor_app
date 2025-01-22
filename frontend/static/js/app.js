@@ -16,6 +16,10 @@ function fetchDeskStatuses() {
                 <h3>Desk ${desk.docking_station_id}</h3>
                 <p>Status: ${desk.status}</p>
                 <p>Last Updates: ${new Date(desk.last_updated).toLocaleString()}</p>
+                <p>Temperature: ${desk.temperature}</p>
+                <p>Humidity: ${desk.humidity}</p>
+                <p>Light: ${desk.light}</p>
+                <p>Noise: ${desk.noise}</p>
             `;
             container.appendChild(deskDiv);
         });

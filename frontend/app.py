@@ -38,6 +38,10 @@ class DeskStatus(db.Model):
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
     status = db.Column(db.String(20), default='free')
     last_updated = db.Column(db.DateTime, default=db.func.current_timestamp())
+    temperature = db.Column(db.Numeric(5, 2))
+    humidity = db.Column(db.Numeric(5, 2))
+    light = db.Column(db.Numeric(6, 2))
+    noise = db.Column(db.Numeric(5, 2))
 
 # Home route to render the desk usage page
 @app.route('/')
@@ -52,7 +56,11 @@ def get_desk_status():
         'desk_id': desk.id,
         'docking_station_id': desk.docking_station_id,
         'status': desk.status,
-        'last_updated': desk.last_updated
+        'last_updated': desk.last_updated,
+        'temperature': desk.temperature,
+        'humidity': desk.humidity,
+        'light': desk.light,
+        'noise': desk.noise
     } for desk in desks])
 
 #API endpoint to update desk status (when a laptop is connected)
