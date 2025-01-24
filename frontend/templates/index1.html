@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Occupancy IEQ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Past Occupancy IEQ Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Desk ID</th>
+                <th>Docking Station ID</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>Light</th>
+                <th>Noise</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.id }}</td>
+                <td>{{ record.desk_id }}</td>
+                <td>{{ record.docking_station_id }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.last_updated }}</td>
+                <td>{{ record.temperature }}</td>
+                <td>{{ record.humidity }}</td>
+                <td>{{ record.light }}</td>
+                <td>{{ record.noise }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

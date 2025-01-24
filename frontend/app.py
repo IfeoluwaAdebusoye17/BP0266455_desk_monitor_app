@@ -48,6 +48,11 @@ class DeskStatus(db.Model):
 def home():
     return render_template('index.html')
 
+
+@app.route('/index1')
+def index1():
+    return render_template('index1.html')
+
 #API endpoint to get desk statuses
 @app.route('/desks', methods=['GET'])
 def get_desk_status():
