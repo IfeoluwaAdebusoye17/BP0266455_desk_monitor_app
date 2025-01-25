@@ -1,7 +1,12 @@
-from flask import render_template
+from flask import Flask, render_template
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from flask_socketio import SocketIO, emit #For real-time updates
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Float, DateTime
+
 import os
 from dotenv import load_dotenv
 load_dotenv() # Take environmental variables from .env
@@ -48,10 +53,11 @@ class DeskStatus(db.Model):
 def home():
     return render_template('index.html')
 
-
+'''
 @app.route('/index1')
 def index1():
     return render_template('index1.html')
+'''
 
 #API endpoint to get desk statuses
 @app.route('/desks', methods=['GET'])
@@ -88,6 +94,36 @@ def update_desk_status(docking_station_id):
         return jsonify({'message': 'Desk status updated'}), 200
     
     return jsonify({'message': 'Docking station not found'}), 404
+
+#Database connection
+engine = create_engine(database_uri)
+Session = sessionmaker(bind=engine)
+Base = declarative_base()
+
+# Define the database model
+class PastOccupancyIEQ(Base):
+    __tablename__ = 'past_occupancy_ieq'
+    id = Column(Integer, primary_key=True)
+    desk_id = Column(Integer)
+    docking_station_id = Column(Integer)
+    status = Column(String)
+    last_updated = Column(DateTime)
+    temperature = Column(Float)
+    humidity = Column(Float)
+    light = Column(Float)
+    noise = Column(Float)
+
+# Route to display data
+@app.route("/index1")
+def index1():
+    session = Session()
+    records = session.query(PastOccupancyIEQ).all()
+    session.close()
+
+    # Pass data to the template
+    return render_template("index1.html", records=records)
+
+
 
 
 if __name__ == '__main__':
