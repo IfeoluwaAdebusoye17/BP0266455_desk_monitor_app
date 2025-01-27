@@ -13,6 +13,22 @@ load_dotenv() # Take environmental variables from .env
 database_uri = os.getenv('SQL_DATABASE_URI')
 
 
+
+from flask import Flask
+import joblib
+import pandas as pd
+from datetime import datetime, timedelta
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Float, DateTime
+import sqlalchemy
+from flask import render_template
+
+
+
+
 app = Flask(__name__)
 
 #Configure the PostgreSQL database connection
@@ -125,6 +141,41 @@ def index1():
 
 
 
+
+
+
+
+#Database connection
+#database_uri = 'postgresql://postgres:Postgrestill100k$@localhost/office_management'
+#engine = create_engine(database_uri)
+#Session = sessionmaker(bind=engine)
+#Base = sqlalchemy.orm.declarative_base()
+
+# Define the database model
+class FutureOccupancyIEQ(Base):
+    __tablename__ = 'predicted_data'
+    id = Column(Integer, primary_key=True)
+    Zone = Column(Integer)
+    Desk = Column(Integer)
+    Hour = Column(Integer)
+    DayOfWeek = Column(Integer)
+    DayOfMonth = Column(Integer)
+    Occupied = Column(Integer)
+    Predicted_Temperature = Column(Float)
+    Predicted_Humidity = Column(Float)
+    Predicted_Light = Column(Float)
+    Predicted_Noise = Column(Float)
+
+
+# Route to display data
+@app.route("/index2")
+def index2():
+    session = Session()
+    records = session.query(FutureOccupancyIEQ).all()
+    session.close()
+
+    # Pass data to the template
+    return render_template("index2.html", records=records)
 
 if __name__ == '__main__':
     # Ensure the app context is set up

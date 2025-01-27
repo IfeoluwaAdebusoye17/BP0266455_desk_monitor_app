@@ -5,10 +5,15 @@ from datetime import datetime, timedelta
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Float, DateTime
+import sqlalchemy
+from flask import render_template
 
 # Initialize Flask App
 app = Flask(__name__)
 
+'''
 # Load models
 regression_model = joblib.load('regression_model.pkl')  # IEQ prediction model
 classification_model = joblib.load('classification_model.pkl')  # Occupancy prediction model
@@ -50,10 +55,6 @@ def predict_future_data(data_rows):
     data_rows['Predicted_Noise'] = ieq_predictions[:, 3]
 
     return data_rows
-
-
-
-
 
 
 #print(predicted_data_test)
@@ -100,5 +101,42 @@ def generate_predictions():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
 
+
+'''
+
+#Database connection
+database_uri = 'postgresql://postgres:Postgrestill100k$@localhost/office_management'
+engine = create_engine(database_uri)
+Session = sessionmaker(bind=engine)
+Base = sqlalchemy.orm.declarative_base()
+
+# Define the database model
+class FutureOccupancyIEQ(Base):
+    __tablename__ = 'predicted_data'
+    id = Column(Integer, primary_key=True)
+    Zone = Column(Integer)
+    Desk = Column(Integer)
+    Hour = Column(Integer)
+    DayOfWeek = Column(Integer)
+    DayOfMonth = Column(Integer)
+    Occupied = Column(Integer)
+    Predicted_Temperature = Column(Float)
+    Predicted_Humidity = Column(Float)
+    Predicted_Light = Column(Float)
+    Predicted_Noise = Column(Float)
+
+
+# Route to display data
+@app.route("/")
+def home():
+    session = Session()
+    records = session.query(FutureOccupancyIEQ).all()
+    session.close()
+
+    # Pass data to the template
+    return render_template("index2.html", records=records)
+
+
 if __name__ == '__main__':
-    app.run()
+    # Ensure the database tables exist
+    app.run(port=5001)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Past Occupancy IEQ</title>
+    <title>Future Predicted Occupancy and IEQ Data</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,33 +28,37 @@
 </head>
 <body>
     <a href="{{ url_for('home') }}">Home</a>
-    <h1>Past Occupancy and IEQ Data</h1>
+    <h1>Predicted Occupancy IEQ Data</h1>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Desk ID</th>
-                <th>Docking Station ID</th>
-                <th>Status</th>
-                <th>Last Updated</th>
-                <th>Temperature</th>
-                <th>Humidity</th>
-                <th>Light</th>
-                <th>Noise</th>
+                <th>Zone</th>
+                <th>Desk</th>
+                <th>Hour</th>
+                <th>DayOfWeek</th>
+                <th>DayOfMonth</th>
+                <th>Occupied</th>
+                <th>Predicted_Temperature</th>
+                <th>Predicted_Humidity</th>
+                <th>Predicted_Light</th>
+                <th>Predicted_Noise</th>
             </tr>
         </thead>
         <tbody>
             {% for record in records %}
             <tr>
                 <td>{{ record.id }}</td>
-                <td>{{ record.desk_id }}</td>
-                <td>{{ record.docking_station_id }}</td>
-                <td>{{ record.status }}</td>
-                <td>{{ record.last_updated }}</td>
-                <td>{{ record.temperature }}</td>
-                <td>{{ record.humidity }}</td>
-                <td>{{ record.light }}</td>
-                <td>{{ record.noise }}</td>
+                <td>{{ record.Zone }}</td>
+                <td>{{ record.Desk }}</td>
+                <td>{{ record.Hour }}</td>
+                <td>{{ record.DayOfWeek }}</td>
+                <td>{{ record.DayOfMonth }}</td>
+                <td>{{ record.Occupied }}</td>
+                <td>{{ record.Predicted_Temperature }}</td>
+                <td>{{ record.Predicted_Humidity }}</td>
+                <td>{{ record.Predicted_Light }}</td>
+                <td>{{ record.Predicted_Noise }}</td>
             </tr>
             {% endfor %}
         </tbody>
